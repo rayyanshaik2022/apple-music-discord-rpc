@@ -1,0 +1,2 @@
+# apple-music-discord-rpc
+ 
