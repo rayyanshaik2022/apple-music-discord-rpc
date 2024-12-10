@@ -2,7 +2,7 @@ const RPC = require("discord-rpc");
 require("dotenv").config();
 
 // Helper functions
-const { iTunesSearch, timeStrToMs } = require("./utils");
+const { iTunesSearch, timeStrToMs, iTunesSongSearch } = require("./utils");
 
 const clientId = process.env.discordClientId;
 
@@ -15,6 +15,10 @@ const rpc = new RPC.Client({ transport: "ipc" });
 let lastTrackName = null;
 // Track when a new song was started (time)
 let playedFrom = null;
+// Get track length (total length not duration remaining)
+let trackLengthMillis = null;
+// Current track genre
+let trackGenre = null;
 
 async function updateActivityStatus() {
   if (!rpc) return;
@@ -49,6 +53,11 @@ async function updateActivityStatus() {
   if (track_name != lastTrackName) {
     lastTrackName = track_name;
     playedFrom = Date.now();
+
+    let trackData = await iTunesSongSearch(track_artist, track_name);
+    trackLengthMillis = trackData.trackTimeMillis;
+    trackGenre = trackData.primaryGenreName;
+    console.log("Track Length:", trackLengthMillis);
   }
 
   // Get album cover and artist URLS
@@ -66,7 +75,7 @@ async function updateActivityStatus() {
       startTimestamp: current_time
         ? Date.now() - timeStrToMs(current_time)
         : playedFrom,
-
+      endTimestamp: trackLengthMillis + playedFrom,
       largeImageKey: iTunesUrls ? iTunesUrls.albumCoverUrl : appleMusicLogo,
       largeImageText: `${track_name} — ${track_artist}`,
     };
