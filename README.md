@@ -33,6 +33,9 @@ Node.Js Libraries
 1. `cd discord-rpc`
 2. `npm install`
 
+### Running The Code
+Simply execute the `run.bat` file to run both servers.
+
 ## How it works
 
 1. The backend uses `pywinauto` to interface with the Apple Music app, fetching details about the currently playing track.
