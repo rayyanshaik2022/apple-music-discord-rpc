@@ -26,9 +26,14 @@ class AppleMusicHandler:
     def __init__(self, window_title="Apple Music"):
         self.window_title = window_title
         self.main_win = None
+        self.connection_lock = False
 
     def connect(self):
+        if self.connection_lock:
+            return
+
         try:
+            self.connection_lock = True
             app = Application(backend="uia").connect(title_re="Apple Music")
             self.main_win = app.window(title_re="Apple Music")
             self.find_all_elements()
@@ -37,6 +42,7 @@ class AppleMusicHandler:
         except ElementNotFoundError as err:
             print("Retrying connection in 5 seconds...")
             time.sleep(5)
+            self.connection_lock = False
             self.connect()
 
     def is_connected(self):
