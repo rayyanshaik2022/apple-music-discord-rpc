@@ -2,45 +2,41 @@
 
 ## Apple Music Discord Rich Presence
 
-This project integrates Apple Music with Discord Rich Presence to display detailed playback information about your current track directly in your Discord profile. It uses a Python Flask backend to retrieve information from the Apple Music app and a Node.js application to update your Discord status.
+This project integrates Apple Music with Discord Rich Presence to display detailed playback information about your current track directly in your Discord profile. It parses process data directly from the application and feeds it to a Discord RPC client to update your activity status. Specifics of implementation vary with OS.
 
 ![Example Image](images/discord_activity_status.png)
 
 ## Features
 
-- Displays the currently playing track on Apple Music in Discord Rich Presence.
+- Displays the currently playing track on Apple Music in Discord Activity Status.
 - Includes track title, artist, album, and a progress bar showing elapsed time.
 - Dynamically updates information when the track changes.
 
-## Installation
+### Mac OS
 
-### Prerequisites
+- Full `Typescript` implementation
+- `.applescript` utilized to gather process data via internal API
+- `Node.js` server manages `Discord RPC` client and periodically updates
 
-- Python 3.7+ with pip installed.
-- Node.js with npm installed.
-- Apple Music app installed and running on your system.
-- Windows System (tested on Windows 11)
+#### Steps to Install & Run (Mac)
 
-### Libraries
+1. From inside main directory: `cd mac/`
+2. Install packages via: `npm install`
+3. Build and run code via: `npm run build && npm run start`
 
-Python Libraries
+### Windows
 
-1. `cd backend`
-2. `pip install -r requirements.txt`
+- `Python3` manager to extract relevant information from Apple Music application "process"
+- `Flask` (`Python3`) server hosts local API to streamline data communication
+- `Javascript` and `Node.js` server manages `Discord RPC` client and updates via data fetched from local `Flask` server.
 
-Node.Js Libraries
+#### Steps to Install & Run (Windows)
 
-1. `cd discord-rpc`
-2. `npm install`
-
-### Running The Code
-Simply execute the `run.bat` file to run both servers.
-
-## How it works
-
-1. The backend uses `pywinauto` to interface with the Apple Music app, fetching details about the currently playing track.
-2. The `Flask` server exposes an API endpoint that provides this information in `JSON` format.
-3. The Discord RPC application periodically queries the Flask server and updates your Discord Rich Presence using the `discord-rpc` library.
+1. From inside main directory: `cd backend`
+2. Install Python libraries: `pip install -r requirements.txt`
+3. Nagivate to Node.js server from main directory: `cd discord-rpc`
+4. Install Node.js packages: `npm install`
+5. Start server by executing `run.bat`: `run.bat`
 
 ## Acknowledgements
 
