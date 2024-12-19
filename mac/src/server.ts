@@ -2,7 +2,7 @@ import * as rpc from "discord-rpc";
 import * as path from "path";
 import { exec } from "child_process";
 
-import { iTunesSearch, AlbumUrlInfo, appleMusicLogo } from "./utils";
+import { iTunesSearch, appleMusicLogo } from "./utils";
 
 const clientId = "1315758334489661440"; // Replace with your Discord app's client ID
 const client = new rpc.Client({ transport: "ipc" });
