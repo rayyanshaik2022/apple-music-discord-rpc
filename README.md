@@ -12,9 +12,12 @@ This project integrates Apple Music with Discord Rich Presence to display detail
 - Includes track title, artist, album, and a progress bar showing elapsed time.
 - Dynamically updates information when the track changes.
 
+- Both the Mac OS and Windows implementation follow the same project structure,
+but utilize different methods of interfacing with the Apple Music application.
+
 ### Mac OS
 
-- Full `Typescript` implementation
+- Full `Typescript` server implementation
 - `.applescript` utilized to gather process data via internal API
 - `Node.js` server manages `Discord RPC` client and periodically updates
 
@@ -23,20 +26,36 @@ This project integrates Apple Music with Discord Rich Presence to display detail
 1. From inside main directory: `cd mac/`
 2. Install packages via: `npm install`
 3. Build and run code via: `npm run build && npm run start`
+4. Once built, code can be re-run via: `npm run start`
 
 ### Windows
 
-- `Python3` manager to extract relevant information from Apple Music application "process"
-- `Flask` (`Python3`) server hosts local API to streamline data communication
-- `Javascript` and `Node.js` server manages `Discord RPC` client and updates via data fetched from local `Flask` server.
+- Full `Typescript` server implementation
+- `Python3` script used to access [Windows GSMTC](https://learn.microsoft.com/en-us/uwp/api/windows.media.control.globalsystemmediatransportcontrolssession?view=winrt-26100) API
+- `Node.js` server manages `Discord RPC` client and periodically updates
 
 #### Steps to Install & Run (Windows)
 
-1. From inside main directory: `cd backend`
-2. Install Python libraries: `pip install -r requirements.txt`
-3. Nagivate to Node.js server from main directory: `cd discord-rpc`
-4. Install Node.js packages: `npm install`
-5. Start server by executing `run.bat`: `run.bat`
+1. From inside main directory: `cd windows`
+2. Create and setup Python environment. Requires `Python 3.9`
+    - via: `npm run setup:python`
+3. Build `.ts` files via: `npm run build`
+4. Run code via: `npm run start`
+
+## Versions
+
+### v1.2 (Active)
+- Windows and Mac implementations
+- Single (node) server manages data extraction and updating activity
+- More accurate, reliable and performant data extraction achieved by utilizing
+OS-specific APIs. 
+
+### v1.1
+- Windows only implementation due application data extraction methods (pywinauto)
+- Discord-RPC server and application data extraction were run on two
+separate servers. 
+- Servers interacted and shared data via local API endpoints
+- Worked, but prone to reconnection errors and slow data extraction
 
 ## Acknowledgements
 
