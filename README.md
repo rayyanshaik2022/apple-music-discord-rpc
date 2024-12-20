@@ -44,16 +44,18 @@ but utilize different methods of interfacing with the Apple Music application.
 
 ## Versions
 
-### v1.2 (Active)
+### v0.2 (Active)
+
 - Windows and Mac implementations
 - Single (node) server manages data extraction and updating activity
 - More accurate, reliable and performant data extraction achieved by utilizing
-OS-specific APIs. 
+OS-specific APIs.
 
-### v1.1
+### v0.1
+
 - Windows only implementation due application data extraction methods (pywinauto)
 - Discord-RPC server and application data extraction were run on two
-separate servers. 
+separate servers.
 - Servers interacted and shared data via local API endpoints
 - Worked, but prone to reconnection errors and slow data extraction
 
