@@ -114,6 +114,9 @@ async function updateRichPresence() {
       largeImageText: `${trackName} — ${trackArtist}`,
       largeImageKey: iTunesUrls ? iTunesUrls.albumCoverUrl : appleMusicLogo,
       instance: false, // TODO : double check what this does exactly
+      ...(iTunesUrls && {
+        buttons: [{ label: "View Artist", url: iTunesUrls.artistUrl }],
+      }),
     });
 
     console.log(

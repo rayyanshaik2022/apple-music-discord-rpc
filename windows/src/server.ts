@@ -16,12 +16,16 @@ interface MusicData {
   currentPosition: number;
 }
 
-
 function getMusicData(): Promise<MusicData> {
   return new Promise((resolve, reject) => {
     // Resolve the paths to the Python interpreter and script
-    const pythonPath = path.resolve(__dirname, '../venv', 'Scripts', 'python.exe');  // On Windows
-    const scriptPath = path.resolve(__dirname, '../scripts/music_data.py');
+    const pythonPath = path.resolve(
+      __dirname,
+      "../venv",
+      "Scripts",
+      "python.exe"
+    ); // On Windows
+    const scriptPath = path.resolve(__dirname, "../scripts/music_data.py");
 
     execFile(pythonPath, [scriptPath], (error, stdout, stderr) => {
       if (error) {
@@ -36,8 +40,8 @@ function getMusicData(): Promise<MusicData> {
           trackArtist: "",
           trackAlbum: "",
           trackDuration: 0,
-          currentPosition: 0
-        })
+          currentPosition: 0,
+        });
         return;
       }
 
@@ -47,7 +51,7 @@ function getMusicData(): Promise<MusicData> {
         trackArtist,
         trackAlbum,
         currentPositionStr,
-        trackDurationStr
+        trackDurationStr,
       ] = result.split("|");
 
       const trackDuration: number = parseInt(trackDurationStr);
@@ -91,6 +95,9 @@ async function updateRichPresence() {
       largeImageText: `${trackName} — ${trackArtist}`,
       largeImageKey: iTunesUrls ? iTunesUrls.albumCoverUrl : appleMusicLogo,
       instance: false, // TODO : double check what this does exactly
+      ...(iTunesUrls && {
+        buttons: [{ label: "View Artist", url: iTunesUrls.artistUrl }],
+      }),
     });
 
     console.log(
