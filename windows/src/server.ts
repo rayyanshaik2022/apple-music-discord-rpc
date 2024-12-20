@@ -21,7 +21,6 @@ function getMusicData(): Promise<MusicData> {
   return new Promise((resolve, reject) => {
     // Resolve the paths to the Python interpreter and script
     const pythonPath = path.resolve(__dirname, '../venv', 'Scripts', 'python.exe');  // On Windows
-    // On Linux/macOS, this would be: '../venv/bin/python'
     const scriptPath = path.resolve(__dirname, '../scripts/music_data.py');
 
     execFile(pythonPath, [scriptPath], (error, stdout, stderr) => {
