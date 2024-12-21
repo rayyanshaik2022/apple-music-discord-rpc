@@ -3,11 +3,17 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+import { initializeDiscordRpc } from './discordRpc'
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 760,
+    height: 600,
+    minHeight: 560,
+    minWidth: 420,
+    maxHeight: 600,
+    maxWidth: 760,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -24,6 +30,23 @@ function createWindow(): void {
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+
+  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          "default-src 'self'; img-src 'self' https: data: https://placehold.co; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+        ]
+      }
+    })
+  })
+
+  initializeDiscordRpc((status) => {
+    if (mainWindow) {
+      mainWindow.webContents.send('rpc-status-changed', status)
+    }
   })
 
   // HMR for renderer base on electron-vite cli.

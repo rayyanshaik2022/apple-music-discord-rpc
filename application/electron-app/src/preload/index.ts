@@ -1,4 +1,4 @@
-import { contextBridge } from 'electron'
+import { ipcRenderer, contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
@@ -20,3 +20,8 @@ if (process.contextIsolated) {
   // @ts-ignore (define in dts)
   window.api = api
 }
+
+contextBridge.exposeInMainWorld('rpc', {
+  onStatusChange: (callback) =>
+    ipcRenderer.on('rpc-status-changed', (_, status) => callback(status)),
+})
